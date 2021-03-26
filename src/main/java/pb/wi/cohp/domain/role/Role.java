@@ -1,4 +1,4 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

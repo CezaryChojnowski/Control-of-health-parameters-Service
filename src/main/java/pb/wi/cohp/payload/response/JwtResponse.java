@@ -1,4 +1,4 @@
-package pb.wi.cohp.config.jwt.payload.response;
+package pb.wi.cohp.payload.response;
 
 import java.util.List;
 

@@ -1,7 +1,9 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.measure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import pb.wi.cohp.domain.user.User;
+import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 
 import javax.persistence.*;
 import java.time.LocalDate;

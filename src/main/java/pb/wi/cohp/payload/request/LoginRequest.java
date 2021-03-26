@@ -1,4 +1,4 @@
-package pb.wi.cohp.config.jwt.payload.request;
+package pb.wi.cohp.payload.request;
 
 public class LoginRequest {
 

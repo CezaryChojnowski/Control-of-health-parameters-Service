@@ -1,4 +1,4 @@
-package pb.wi.cohp.config.jwt.payload.request;
+package pb.wi.cohp.payload.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +16,5 @@ public class SignupRequest {
     private String username;
     private String password;
     private String personalIdNumber;
-    private Set<String> roles;
+//    private Set<String> roles;
 }

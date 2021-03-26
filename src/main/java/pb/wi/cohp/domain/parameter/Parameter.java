@@ -1,10 +1,13 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pb.wi.cohp.domain.measureParameter.MeasureParameter;
+import pb.wi.cohp.domain.range.Range;
+import pb.wi.cohp.domain.test.Test;
 
 import javax.persistence.*;
 

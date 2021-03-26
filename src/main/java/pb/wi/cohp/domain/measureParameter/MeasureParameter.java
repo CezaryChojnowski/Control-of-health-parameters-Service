@@ -1,10 +1,12 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.measureParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pb.wi.cohp.domain.measure.Measure;
+import pb.wi.cohp.domain.parameter.Parameter;
 
 import javax.persistence.*;
 
@@ -28,7 +30,7 @@ public class MeasureParameter {
     private Measure measure;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Parameter.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = pb.wi.cohp.domain.parameter.Parameter.class)
     @JoinColumn(name="id_parameter")
     @JsonIgnore
     private Parameter parameter;

@@ -1,10 +1,14 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.test;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pb.wi.cohp.domain.disease.Disease;
+import pb.wi.cohp.domain.parameter.Parameter;
+import pb.wi.cohp.domain.user.User;
+import pb.wi.cohp.domain.reminder.Reminder;
 
 import javax.persistence.*;
 import java.util.ArrayList;

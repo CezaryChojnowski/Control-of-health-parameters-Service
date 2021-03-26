@@ -1,33 +1,30 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.range;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pb.wi.cohp.domain.parameter.Parameter;
+import pb.wi.cohp.domain.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reminder {
+public class Range {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Setter
-    private LocalDate date;
+    private Double min;
 
     @Setter
-    private LocalTime time;
-
-    @Setter
-    private String note;
+    private Double max;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
@@ -36,6 +33,8 @@ public class Reminder {
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_test", referencedColumnName = "id")
-    private Test test;
+    @JoinColumn(name = "id_parameter", referencedColumnName = "id")
+    private Parameter parameter;
+
+
 }
