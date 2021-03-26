@@ -1,12 +1,20 @@
-package pb.wi.cohp.model;
+package pb.wi.cohp.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pb.wi.cohp.config.validator.ValidEmail;
+import pb.wi.cohp.config.validator.ValidPersonalIdNumber;
+import pb.wi.cohp.domain.disease.Disease;
+import pb.wi.cohp.domain.measure.Measure;
+import pb.wi.cohp.domain.range.Range;
+import pb.wi.cohp.domain.reminder.Reminder;
+import pb.wi.cohp.domain.role.Role;
+import pb.wi.cohp.domain.test.Test;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +24,10 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+@PropertySource("classpath:PL.validation.messages.properties")
 public class User {
     @Getter
     @Id
@@ -23,18 +35,23 @@ public class User {
     private Long id;
 
     @Setter
+    @NotEmpty(message = "{user.username.notEmpty}")
     private String username;
 
     @Setter
+    @NotEmpty(message = "{user.firstName.notEmpty}")
     private String firstName;
 
     @Setter
+    @NotEmpty(message = "{user.lastName.notEmpty}")
     private String lastName;
 
     @Setter
+    @ValidPersonalIdNumber
     private String personalIdNumber;
 
     @Setter
+    @ValidEmail
     private String email;
 
     @Setter
