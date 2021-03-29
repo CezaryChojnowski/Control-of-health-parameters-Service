@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 @PropertySource("classpath:messages.properties")
 @PropertySource("classpath:PL.exception.messages.properties")
+@CrossOrigin
 public class UserController {
 
     final UserService userService;
