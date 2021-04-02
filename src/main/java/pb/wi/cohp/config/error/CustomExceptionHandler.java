@@ -1,7 +1,9 @@
 package pb.wi.cohp.config.error;
 
+import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,6 @@ import java.util.List;
 @PropertySource("classpath:messages.properties")
 @PropertySource("classpath:PL.exception.messages.properties")
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @Value("${registrationFailed}")
-    private String registrationFailed;
 
     @Value("${validationFailed}")
     private String validationFailed;
@@ -66,14 +65,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(error, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(UserExistsException.class)
-    public ResponseEntity<Object> handleUsernameIsAlreadyTakenException(UserExistsException exception){
-        List<String> details = new ArrayList<>();
-        details.add(exception.getLocalizedMessage());
-        UserExistsResponse error = new UserExistsResponse(registrationFailed, details, HttpStatus.CONFLICT.value());
-        return new ResponseEntity(error, HttpStatus.CONFLICT);
-    }
-
     @ExceptionHandler(UserDoesNotHaveActiveAccountException.class)
     public ResponseEntity<Object> handleUserDoesNotHaveActiveAccountException(UserDoesNotHaveActiveAccountException exception){
         List<String> details = new ArrayList<>();
@@ -103,6 +94,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
         PasswordValidationFailedResponse error = new PasswordValidationFailedResponse(validationFailed, details, HttpStatus.CONFLICT.value());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NonUniqueResultException.class)
+    public ResponseEntity<Object> handleNonUniqueResultException(PasswordValidationFailedException exception){
+        List<String> details = new ArrayList<>();
+        details.add(exception.getLocalizedMessage());
+        PasswordValidationFailedResponse error = new PasswordValidationFailedResponse("1", details, HttpStatus.CONFLICT.value());
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 

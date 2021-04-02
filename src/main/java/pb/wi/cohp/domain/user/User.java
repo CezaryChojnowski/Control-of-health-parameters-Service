@@ -2,7 +2,6 @@ package pb.wi.cohp.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pb.wi.cohp.config.validator.ValidEmail;
 import pb.wi.cohp.config.validator.ValidPersonalIdNumber;
@@ -34,6 +33,7 @@ public class User {
     private Long id;
 
     @Setter
+    @Column(unique = true)
     @NotEmpty(message = "{user.username.notEmpty}")
     private String username;
 

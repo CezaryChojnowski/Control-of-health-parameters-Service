@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.IncorrectTokenException;
 import pb.wi.cohp.config.error.exception.PasswordValidationFailedException;
-import pb.wi.cohp.config.error.exception.UserExistsException;
 import pb.wi.cohp.config.error.exception.UserNotFoundException;
 import pb.wi.cohp.domain.role.ERole;
 import pb.wi.cohp.domain.role.Role;
@@ -39,27 +38,6 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public boolean checkIfExistsUserWithGivenUsername(String username){
-        if(userRepository.findUserByUsername(username).isPresent()){
-            throw new UserExistsException(env.getProperty("usernameIsAlreadyTaken"));
-        }
-        return false;
-    }
-
-    public boolean checkIfExistsUserWithGivenEmail(String email){
-        if(userRepository.findUserByEmail(email).isPresent()){
-            throw new UserExistsException(env.getProperty("emailIsAlreadyTaken"));
-        }
-        return false;
-    }
-
-    public boolean checkIfExistsUserWithGivenPersonalIdNumber(String personalIdNumber){
-        if(userRepository.findUserByPersonalIdNumber(personalIdNumber).isPresent()){
-            throw new UserExistsException(env.getProperty("personalIdNumberIsAlreadyTaken"));
-        }
-        return false;
-    }
-
     public boolean checkIfPasswordIsValid(String password)
     {
         Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$");
@@ -78,9 +56,6 @@ public class UserService {
                            String password,
                            String token,
                            boolean active){
-        checkIfExistsUserWithGivenUsername(username);
-        checkIfExistsUserWithGivenEmail(email);
-        checkIfExistsUserWithGivenPersonalIdNumber(personalIdNumber);
         checkIfPasswordIsValid(password);
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_USER.name());
