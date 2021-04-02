@@ -2,12 +2,17 @@ package pb.wi.cohp.config.error;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pb.wi.cohp.config.error.exception.*;
 import pb.wi.cohp.config.error.response.*;
@@ -43,6 +48,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Value("${accountActivationFailed}")
     private String accountActivationFailed;
+
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException exception) {
@@ -110,5 +116,30 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ConstraintViolationResponse constraintViolationResponse =
                 new ConstraintViolationResponse(validationFailed ,details, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<Object>(constraintViolationResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<Object> handleInvalidDataException(InvalidDataException exception) {
+        List<String> details = new ArrayList<>();
+        details.add(exception.getLocalizedMessage());
+        InvalidDataResponse error = new InvalidDataResponse(validationFailed, details, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+        List<String> details = new ArrayList<String>();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            details.add(error.getDefaultMessage());
+        }
+        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
+            details.add(error.getDefaultMessage());
+        }
+        MethodArgumentNotValidResponse methodArgumentNotValidResponse = new MethodArgumentNotValidResponse(validationFailed, details, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<Object>(methodArgumentNotValidResponse, HttpStatus.BAD_REQUEST);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import pb.wi.cohp.config.error.exception.UserDoesNotHaveActiveAccountException;
@@ -21,6 +22,7 @@ import pb.wi.cohp.domain.role.RoleRepository;
 import pb.wi.cohp.domain.user.UserService;
 import pb.wi.cohp.payload.request.SignupRequest;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:messages.properties")
 @PropertySource("classpath:PL.exception.messages.properties")
 @CrossOrigin
+@Validated
 public class UserController {
 
     final UserService userService;
@@ -53,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest){
         userService.createUser(
                 signupRequest.getUsername(),
                 signupRequest.getFirstName(),

@@ -27,7 +27,6 @@ import java.util.Set;
 @ToString
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@PropertySource("classpath:PL.validation.messages.properties")
 public class User {
     @Getter
     @Id
