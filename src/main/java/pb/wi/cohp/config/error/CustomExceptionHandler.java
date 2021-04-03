@@ -3,7 +3,6 @@ package pb.wi.cohp.config.error;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ import java.util.List;
 @SuppressWarnings({"unchecked","rawtypes"})
 @ControllerAdvice
 @PropertySource("classpath:messages.properties")
-@PropertySource("classpath:PL.exception.messages.properties")
+@PropertySource("classpath:en.exception.messages.properties")
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Value("${validationFailed}")

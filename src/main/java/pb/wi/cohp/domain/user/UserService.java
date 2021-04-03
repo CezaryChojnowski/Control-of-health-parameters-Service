@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.IncorrectTokenException;
-import pb.wi.cohp.config.error.exception.PasswordValidationFailedException;
 import pb.wi.cohp.config.error.exception.UserNotFoundException;
 import pb.wi.cohp.domain.role.ERole;
 import pb.wi.cohp.domain.role.Role;
@@ -16,12 +15,10 @@ import pb.wi.cohp.payload.response.MessageResponse;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
-@PropertySource("classpath:PL.exception.messages.properties")
-@PropertySource("classpath:PL.validation.messages.properties")
+@PropertySource("classpath:en.exception.messages.properties")
+@PropertySource("classpath:en.validation.messages.properties")
 public class UserService {
     final UserRepository userRepository;
 
@@ -38,16 +35,6 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public boolean checkIfPasswordIsValid(String password)
-    {
-        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$");
-        Matcher matcher = pattern.matcher(password);
-        if(!matcher.matches()){
-            throw new PasswordValidationFailedException(env.getProperty("user.password.valid"));
-        }
-        return true;
-    }
-
     public User createUser(String username,
                            String firstName,
                            String lastName,
@@ -56,7 +43,6 @@ public class UserService {
                            String password,
                            String token,
                            boolean active){
-        checkIfPasswordIsValid(password);
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_USER.name());
         roles.add(userRole);
@@ -94,10 +80,6 @@ public class UserService {
 
     public User getUserByEmail(String email){
         return userRepository.findUserByEmail(email).get();
-    }
-
-    public void updateUser(User user){
-        userRepository.save(user);
     }
 
     public ResponseEntity<?> activateAccount(String email,

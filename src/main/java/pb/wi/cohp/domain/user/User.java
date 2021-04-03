@@ -3,8 +3,7 @@ package pb.wi.cohp.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pb.wi.cohp.config.validator.ValidEmail;
-import pb.wi.cohp.config.validator.ValidPersonalIdNumber;
+import pb.wi.cohp.config.validator.*;
 import pb.wi.cohp.domain.disease.Disease;
 import pb.wi.cohp.domain.measure.Measure;
 import pb.wi.cohp.domain.range.Range;
@@ -33,7 +32,7 @@ public class User {
     private Long id;
 
     @Setter
-    @Column(unique = true)
+    @UniqueUsername(message = "{user.username.unique}")
     @NotEmpty(message = "{user.username.notEmpty}")
     private String username;
 
@@ -46,11 +45,13 @@ public class User {
     private String lastName;
 
     @Setter
-    @ValidPersonalIdNumber
+    @ValidPersonalIdNumber(message = "{user.personalIdNumber.valid}")
+    @UniquePersonalIdNumber(message = "{user.personalIdNumber.unique}")
     private String personalIdNumber;
 
     @Setter
-    @ValidEmail
+    @ValidEmail(message = "{user.email.valid}")
+    @UniqueEmail(message = "{user.email.unique}")
     private String email;
 
     @Setter

@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidPersonalIdNumber {
 
-    String message() default "Niepoprawny format numeru pesel";
+    String message();
 
     Class<?>[] groups() default {};
 

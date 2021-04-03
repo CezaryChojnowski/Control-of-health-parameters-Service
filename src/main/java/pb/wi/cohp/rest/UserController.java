@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @PropertySource("classpath:messages.properties")
-@PropertySource("classpath:PL.exception.messages.properties")
+@PropertySource("classpath:en.exception.messages.properties")
 @CrossOrigin
 @Validated
 public class UserController {

@@ -20,7 +20,7 @@ public class SignupRequest {
     @NotEmpty(message = "{user.lastName.notEmpty}")
     private String lastName;
 
-    @ValidEmail
+    @ValidEmail(message = "{user.email.valid}")
     @UniqueEmail(message = "{user.email.unique}")
     private String email;
 
@@ -28,9 +28,10 @@ public class SignupRequest {
     @NotEmpty(message = "{user.username.notEmpty}")
     private String username;
 
+    @ValidPassword(message = "{user.password.valid}")
     private String password;
 
-    @ValidPersonalIdNumber
+    @ValidPersonalIdNumber(message = "{user.personalIdNumber.valid}")
     @UniquePersonalIdNumber(message = "{user.personalIdNumber.unique}")
     private String personalIdNumber;
 }
