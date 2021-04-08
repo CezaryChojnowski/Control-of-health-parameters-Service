@@ -13,6 +13,7 @@ import pb.wi.cohp.domain.role.RoleRepository;
 import pb.wi.cohp.payload.response.MessageResponse;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -96,5 +97,9 @@ public class UserService {
             throw new UserNotFoundException(env.getProperty("emailNotFound"));
         }
         throw new IncorrectTokenException(env.getProperty("badToken"));
+    }
+
+    public List<User> getUsers(){
+        return userRepository.findUserByRoles(roleRepository.findByName("ROLE_USER"));
     }
 }
