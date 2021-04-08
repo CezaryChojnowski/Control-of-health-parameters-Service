@@ -102,4 +102,11 @@ public class UserService {
     public List<User> getUsers(){
         return userRepository.findUserByRoles(roleRepository.findByName("ROLE_USER"));
     }
+
+    public User activateAccount(String email){
+        User user = userRepository.findUserByEmail(email).get();
+        user.setActive(true);
+        user.setToken("");
+        return userRepository.save(user);
+    }
 }

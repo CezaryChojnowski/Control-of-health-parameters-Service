@@ -103,7 +103,7 @@ public class UserController {
     }
 
     @GetMapping("/{email}/{token}")
-    public ResponseEntity<?> authenticateUser(@PathVariable String email,
+    public ResponseEntity<?> activeAccount(@PathVariable String email,
                                               @PathVariable String token) {
         return userService.activateAccount(email,
                 token);
@@ -122,6 +122,20 @@ public class UserController {
 
     private UserDTO convertToDto(User user){
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{email}")
+    public ResponseEntity<?> activeAccount(@PathVariable String email){
+        return ResponseEntity
+                .ok(
+                        convertToDto(
+                                userService
+                                .activateAccount(
+                                        email
+                                )
+                        )
+                );
     }
 
 }
