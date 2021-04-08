@@ -1,8 +1,10 @@
 package pb.wi.cohp.rest;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,8 @@ import pb.wi.cohp.config.error.exception.UserDoesNotHaveActiveAccountException;
 import pb.wi.cohp.config.jwt.JwtUtils;
 import pb.wi.cohp.config.jwt.service.UserDetailsImpl;
 import pb.wi.cohp.domain.email.EmailService;
+import pb.wi.cohp.domain.user.User;
+import pb.wi.cohp.domain.user.UserDTO;
 import pb.wi.cohp.payload.request.LoginRequest;
 import pb.wi.cohp.payload.response.JwtResponse;
 import pb.wi.cohp.payload.response.MessageResponse;
@@ -46,13 +50,16 @@ public class UserController {
 
     final EmailService emailService;
 
-    public UserController(UserService userService, RoleRepository roleRepository, Environment env, JwtUtils jwtUtils, AuthenticationManager authenticationManager, EmailService emailService) {
+    final ModelMapper modelMapper;
+
+    public UserController(UserService userService, RoleRepository roleRepository, Environment env, JwtUtils jwtUtils, AuthenticationManager authenticationManager, EmailService emailService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.env = env;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.emailService = emailService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/register")
@@ -100,6 +107,21 @@ public class UserController {
                                               @PathVariable String token) {
         return userService.activateAccount(email,
                 token);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
+    public ResponseEntity<?> getUsers(){
+        List<User> users = userService.getUsers();
+
+        return ResponseEntity.ok(users
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList()));
+    }
+
+    private UserDTO convertToDto(User user){
+        return modelMapper.map(user, UserDTO.class);
     }
 
 }
