@@ -18,6 +18,11 @@ public class EmailUniqueValidator implements ConstraintValidator<UniqueEmail,Str
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        return !userRepository.existsByEmail(email);
+        try{
+            boolean exists = userRepository.existsByEmail(email);
+            return !exists;
+        }catch (NullPointerException nullPointerException){
+            return true;
+        }
     }
 }

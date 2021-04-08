@@ -17,7 +17,12 @@ public class UsernameUniqueValidator implements ConstraintValidator<UniqueUserna
     }
 
     @Override
-    public boolean isValid(String personalIdNumber, ConstraintValidatorContext context) {
-        return !userRepository.existsByUsername(personalIdNumber);
+    public boolean isValid(String username, ConstraintValidatorContext context) {
+        try{
+            boolean exists = userRepository.existsByUsername(username);
+            return !exists;
+        }catch (NullPointerException nullPointerException){
+            return true;
+        }
     }
 }

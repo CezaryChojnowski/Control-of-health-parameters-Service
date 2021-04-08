@@ -18,6 +18,11 @@ public class PersonalIdNumberValidator implements ConstraintValidator<UniquePers
 
     @Override
     public boolean isValid(String personalIdNumber, ConstraintValidatorContext context) {
-        return !userRepository.existsByPersonalIdNumber(personalIdNumber);
+        try{
+            boolean exists = userRepository.existsByPersonalIdNumber(personalIdNumber);
+            return !exists;
+        }catch (NullPointerException nullPointerException){
+            return true;
+        }
     }
 }
