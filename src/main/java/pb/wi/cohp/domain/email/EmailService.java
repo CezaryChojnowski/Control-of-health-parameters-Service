@@ -24,6 +24,13 @@ public class EmailService {
             message.setSubject("Your token to activate account");
             message.setText("http://localhost:8080/users/"+email+"/"+token);
             emailSender.send(message);
+    }
 
+    public void sendEmailWithPasswordAndLogin(String password, String username, String email){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Your password and username");
+        message.setText("Username: " + username +"\n" + "Password: " + password);
+        emailSender.send(message);
     }
 }
