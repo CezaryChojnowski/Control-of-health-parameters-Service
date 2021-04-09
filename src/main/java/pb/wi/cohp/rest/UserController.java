@@ -20,6 +20,7 @@ import pb.wi.cohp.domain.email.EmailService;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserDTO;
 import pb.wi.cohp.payload.request.LoginRequest;
+import pb.wi.cohp.payload.request.SignupRequestAdmin;
 import pb.wi.cohp.payload.response.JwtResponse;
 import pb.wi.cohp.payload.response.MessageResponse;
 import pb.wi.cohp.domain.role.RoleRepository;
@@ -136,6 +137,21 @@ public class UserController {
                                 )
                         )
                 );
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping
+    public ResponseEntity<?> createAdminAccount(@Valid @RequestBody SignupRequestAdmin admin){
+        User user = userService.createUser(
+                admin.getUsername(),
+                admin.getFirstName(),
+                admin.getLastName(),
+                admin.getPersonalIdNumber(),
+                admin.getEmail()
+        );
+        return ResponseEntity.ok(
+                convertToDto(user)
+        );
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.IncorrectTokenException;
 import pb.wi.cohp.config.error.exception.UserNotFoundException;
+import pb.wi.cohp.domain.email.EmailService;
 import pb.wi.cohp.domain.role.ERole;
 import pb.wi.cohp.domain.role.Role;
 import pb.wi.cohp.domain.role.RoleRepository;
@@ -29,11 +30,14 @@ public class UserService {
 
     final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, Environment env, PasswordEncoder encoder, RoleRepository roleRepository) {
+    final EmailService emailService;
+
+    public UserService(UserRepository userRepository, Environment env, PasswordEncoder encoder, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.env = env;
         this.encoder = encoder;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
     public User createUser(String username,
@@ -72,11 +76,13 @@ public class UserService {
         int targetStringLength = 20;
         Random random = new Random();
 
-        return random.ints(leftLimit, rightLimit + 1)
+        String result = random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+
+        return result + "@";
     }
 
     public User getUserByEmail(String email){
@@ -100,7 +106,7 @@ public class UserService {
     }
 
     public List<User> getUsers(){
-        return userRepository.findUserByRoles(roleRepository.findByName("ROLE_USER"));
+        return userRepository.findUserByRoles(roleRepository.findByName(ERole.ROLE_USER.name()));
     }
 
     public User activateAccount(String email){
@@ -109,4 +115,31 @@ public class UserService {
         user.setToken("");
         return userRepository.save(user);
     }
+
+    public User createUser(
+            String username,
+            String firstName,
+            String lastName,
+            String personalIdNumber,
+            String email){
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN.name());
+        roles.add(userRole);
+        String password = generateTokenToActiveAccount();
+        User user = new User.UserBuilder()
+                .username(username)
+                .firstName(firstName)
+                .lastName(lastName)
+                .password(password)
+                .email(email)
+                .personalIdNumber(personalIdNumber)
+                .roles(roles)
+                .active(true)
+                .build();
+        user.setPassword(encoder.encode(password));
+        User userResult = userRepository.save(user);
+        emailService.sendEmailWithPasswordAndLogin(password, username, email);
+        return userResult;
+    }
+
 }
