@@ -1,10 +1,7 @@
 package pb.wi.cohp.domain.test;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pb.wi.cohp.domain.disease.Disease;
 import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.user.User;
@@ -18,6 +15,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class Test {
 
     @Id
@@ -33,6 +32,7 @@ public class Test {
     @JsonIgnore
     private User user;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "test")
     private Reminder reminder;
 
@@ -43,8 +43,5 @@ public class Test {
     private Disease disease;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
-    @JsonIgnore
     private List<Parameter> parameters = new ArrayList<>();
-
-
 }

@@ -1,10 +1,7 @@
 package pb.wi.cohp.domain.disease;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.test.Test;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Disease {
 
     @Id

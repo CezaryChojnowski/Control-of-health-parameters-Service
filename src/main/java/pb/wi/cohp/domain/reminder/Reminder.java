@@ -1,10 +1,7 @@
 package pb.wi.cohp.domain.reminder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.user.User;
 
@@ -16,6 +13,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Reminder {
 
     @Id
