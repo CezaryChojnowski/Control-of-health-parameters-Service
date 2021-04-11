@@ -1,6 +1,7 @@
 package pb.wi.cohp.domain.test;
 
 import org.springframework.stereotype.Service;
+import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
 
 import java.util.List;
@@ -42,7 +43,5 @@ public class TestService {
     public List<Test> getTests(){
         return (List<Test>) testRepository.findAll();
     }
-
-
 
 }

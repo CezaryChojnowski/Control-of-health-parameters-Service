@@ -31,4 +31,12 @@ public class ParameterService {
                     );
         }
     }
+
+    public void deleteParameter(Long parameterId){
+        parameterRepository.deleteById(parameterId);
+    }
+
+    public Parameter editParameter(Parameter parameter){
+        return parameterRepository.save(parameter);
+    }
 }
