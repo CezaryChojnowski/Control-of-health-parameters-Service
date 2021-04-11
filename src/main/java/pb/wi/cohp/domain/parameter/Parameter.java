@@ -1,12 +1,9 @@
 package pb.wi.cohp.domain.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
-import pb.wi.cohp.domain.range.Range;
+//import pb.wi.cohp.domain.range.Range;
 import pb.wi.cohp.domain.test.Test;
 
 import javax.persistence.*;
@@ -15,6 +12,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class Parameter {
 
     @Id
@@ -30,10 +29,12 @@ public class Parameter {
     @JsonIgnore
     private Test test;
 
-    @OneToOne(mappedBy = "parameter")
-    private Range range;
+//    @OneToOne(mappedBy = "parameter")
+//    @JsonIgnore
+//    private Range range;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_measureparameter", referencedColumnName = "id")
+    @JsonIgnore
     private MeasureParameter measureParameter;
 }

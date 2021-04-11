@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pb.wi.cohp.config.validator.*;
 import pb.wi.cohp.domain.disease.Disease;
 import pb.wi.cohp.domain.measure.Measure;
-import pb.wi.cohp.domain.range.Range;
+//import pb.wi.cohp.domain.range.Range;
 import pb.wi.cohp.domain.reminder.Reminder;
 import pb.wi.cohp.domain.role.Role;
 import pb.wi.cohp.domain.test.Test;
@@ -82,9 +82,9 @@ public class User {
     @JsonIgnore
     private List<Test> tests = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonIgnore
-    private List<Range> ranges = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+//    @JsonIgnore
+//    private List<Range> ranges = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
