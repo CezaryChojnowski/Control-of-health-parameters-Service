@@ -8,6 +8,7 @@ import pb.wi.cohp.domain.parameter.ParameterService;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.test.TestService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class TestController {
     @PostMapping("/{testName}")
     public ResponseEntity<?> createTest(
             @PathVariable String testName,
-            @RequestBody List<Parameter> parameterList){
+            @Valid @RequestBody List<Parameter> parameterList){
         Test test = testService.createTest(testName);
         parameterService.createParameter(parameterList, test.getId());
         return ResponseEntity
@@ -49,7 +50,7 @@ public class TestController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
-    public ResponseEntity<?> editTest(@RequestBody Test test){
+    public ResponseEntity<?> editTest(@Valid @RequestBody Test test){
         return ResponseEntity.ok(testService.editTest(test));
     }
 
@@ -63,5 +64,17 @@ public class TestController {
     @GetMapping("/{testId}")
     public ResponseEntity<?> getTest(@PathVariable Long testId){
         return ResponseEntity.ok(testService.findTestById(testId));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{testId}")
+    public ResponseEntity<?> addParametersToTest(@PathVariable Long testId,
+                                                 @Valid @RequestBody List<Parameter> parameterList){
+        parameterService.createParameter(parameterList, testId);
+        return ResponseEntity
+                .ok(
+                        testService
+                                .findTestById(testId)
+                );
     }
 }
