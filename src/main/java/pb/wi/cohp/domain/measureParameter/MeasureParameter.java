@@ -1,10 +1,7 @@
 package pb.wi.cohp.domain.measureParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pb.wi.cohp.domain.measure.Measure;
 import pb.wi.cohp.domain.parameter.Parameter;
 
@@ -14,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class MeasureParameter {
 
     @Id
