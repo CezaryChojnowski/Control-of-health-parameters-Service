@@ -72,7 +72,7 @@ public class UserController {
                 signupRequest.getPersonalIdNumber(),
                 signupRequest.getEmail(),
                 signupRequest.getPassword(),
-                userService.generateTokenToActiveAccount(),
+                userService.generateSomeToken(),
                 false
         );
         emailService.sendEmailWithToken(signupRequest.getEmail());
@@ -108,6 +108,19 @@ public class UserController {
                                               @PathVariable String token) {
         return userService.activateAccount(email,
                 token);
+    }
+
+    @PutMapping("/token/{email}")
+     public void setTokenToResetPassword(@PathVariable String email){
+        userService.setTokenToResetPassword(email);
+    }
+
+    @PutMapping("/token/{email}/{token}/{password}")
+    public ResponseEntity<?> changePassword(@PathVariable String email,
+                                  @PathVariable String token,
+                                  @PathVariable String password){
+        User user = userService.changePassword(email, token, password);
+        return ResponseEntity.ok(convertToDto(user));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

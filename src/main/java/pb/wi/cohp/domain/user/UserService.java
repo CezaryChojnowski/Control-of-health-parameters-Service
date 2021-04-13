@@ -70,7 +70,7 @@ public class UserService {
         return userRepository.findUserByUsername(username).get().isActive();
     }
 
-    public String generateTokenToActiveAccount(){
+    public String generateSomeToken(){
         int leftLimit = 48;
         int rightLimit = 122;
         int targetStringLength = 20;
@@ -125,7 +125,7 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN.name());
         roles.add(userRole);
-        String password = generateTokenToActiveAccount();
+        String password = generateSomeToken();
         User user = new User.UserBuilder()
                 .username(username)
                 .firstName(firstName)
@@ -142,4 +142,28 @@ public class UserService {
         return userResult;
     }
 
+    public void setTokenToResetPassword(String email){
+        try{
+            User user = userRepository.findUserByEmail(email).get();
+            user.setResetPasswordToken(generateSomeToken());
+            userRepository.save(user);
+            emailService.sendEmailWithTokenToResetPassword(email);
+        }catch (Exception ignored){
+            throw new UserNotFoundException(env.getProperty("emailNotFound"));
+        }
+    }
+
+    public User changePassword(String email, String tokenToResetPassword, String password){
+        try{
+            User user = userRepository.findUserByEmail(email).get();
+            if(!user.getResetPasswordToken().equals(tokenToResetPassword)){
+                return null;
+            }
+            user.setPassword(encoder.encode(password));
+            user.setResetPasswordToken(null);
+            return userRepository.save(user);
+        }catch (Exception ignored){
+            throw new UserNotFoundException(env.getProperty("emailNotFound"));
+        }
+    }
 }
