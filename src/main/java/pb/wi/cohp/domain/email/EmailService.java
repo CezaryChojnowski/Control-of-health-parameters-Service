@@ -33,4 +33,13 @@ public class EmailService {
         message.setText("Username: " + username +"\n" + "Password: " + password);
         emailSender.send(message);
     }
+
+    public void sendEmailWithTokenToResetPassword(String email) {
+        String token = userRepository.findUserByEmail(email).get().getResetPasswordToken();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Your token to reset password account");
+        message.setText("http://localhost:8080/users/token/"+email+"/"+token);
+        emailSender.send(message);
+    }
 }
