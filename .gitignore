@@ -181,3 +181,6 @@ Temporary Items
 
 # ignore dowloaded wsdl
 src/wsdl
+
+#application.properties
+application.properties
