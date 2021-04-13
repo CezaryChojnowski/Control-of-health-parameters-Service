@@ -63,6 +63,8 @@ public class User {
     @Setter
     private String token;
 
+    @Setter String resetPasswordToken;
+
     @Setter
     private boolean enabled;
 

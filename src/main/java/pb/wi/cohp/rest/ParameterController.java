@@ -8,6 +8,7 @@ import pb.wi.cohp.domain.parameter.ParameterService;
 
 @RestController
 @RequestMapping("/parameters")
+@CrossOrigin
 public class ParameterController {
 
     final ParameterService parameterService;
