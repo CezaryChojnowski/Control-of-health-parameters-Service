@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.IncorrectTokenException;
-import pb.wi.cohp.config.error.exception.UserNotFoundException;
+import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.email.EmailService;
 import pb.wi.cohp.domain.role.ERole;
 import pb.wi.cohp.domain.role.Role;
@@ -100,7 +100,7 @@ public class UserService {
                 return ResponseEntity.ok(new MessageResponse(env.getProperty("successfulActivateAccount")));
             }
         }catch (Exception ignored){
-            throw new UserNotFoundException(env.getProperty("emailNotFound"));
+            throw new ObjectNotFoundException(env.getProperty("emailNotFound"));
         }
         throw new IncorrectTokenException(env.getProperty("badToken"));
     }
@@ -149,7 +149,7 @@ public class UserService {
             userRepository.save(user);
             emailService.sendEmailWithTokenToResetPassword(email);
         }catch (Exception ignored){
-            throw new UserNotFoundException(env.getProperty("emailNotFound"));
+            throw new ObjectNotFoundException(env.getProperty("emailNotFound"));
         }
     }
 
@@ -163,7 +163,7 @@ public class UserService {
             user.setResetPasswordToken(null);
             return userRepository.save(user);
         }catch (Exception ignored){
-            throw new UserNotFoundException(env.getProperty("emailNotFound"));
+            throw new ObjectNotFoundException(env.getProperty("emailNotFound"));
         }
     }
 

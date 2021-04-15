@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserNotFoundResponse {
+public class ObjectNotFoundResponse {
     private String message;
     private List<String> details;
     private int status;

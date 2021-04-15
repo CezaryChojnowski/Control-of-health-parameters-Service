@@ -1,21 +1,27 @@
 package pb.wi.cohp.domain.test;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import pb.wi.cohp.domain.parameter.Parameter;
+import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.parameter.ParameterService;
 
 import java.util.List;
 
 @Service
+@PropertySource("classpath:en.exception.messages.properties")
 public class TestService {
 
     final TestRepository testRepository;
 
     final ParameterService parameterService;
 
-    public TestService(TestRepository testRepository, ParameterService parameterService) {
+    final Environment env;
+
+    public TestService(TestRepository testRepository, ParameterService parameterService, Environment env) {
         this.testRepository = testRepository;
         this.parameterService = parameterService;
+        this.env = env;
     }
 
     public Test createTest(String name){
@@ -29,11 +35,15 @@ public class TestService {
     }
 
     public Test findTestById(Long id){
-        return testRepository.findById(id).get();
+        if(testRepository.findById(id).isPresent()){
+            return testRepository.findById(id).get();
+        }
+        throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
     }
 
     public void deleteTestById(Long id){
-        testRepository.deleteById(id);
+        Test test = findTestById(id);
+        testRepository.delete(test);
     }
 
     public Test editTest(Test test){
