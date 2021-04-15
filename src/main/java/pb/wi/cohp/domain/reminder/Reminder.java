@@ -2,10 +2,12 @@ package pb.wi.cohp.domain.reminder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,7 +15,8 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Reminder {
 
     @Id
@@ -21,13 +24,21 @@ public class Reminder {
     private Long id;
 
     @Setter
+    @NotNull(message = "{reminder.date.notEmpty}")
     private LocalDate date;
 
     @Setter
+    @NotNull(message = "{reminder.time.notEmpty}")
     private LocalTime time;
 
     @Setter
     private String note;
+
+    @Setter
+    private boolean emailReminder = false;
+
+    @Setter
+    private boolean smsReminder = false;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
@@ -35,7 +46,9 @@ public class Reminder {
     @JsonIgnore
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_test", referencedColumnName = "id")
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Test.class)
+    @JoinColumn(name="id_test")
+    @JsonIgnore
     private Test test;
 }
