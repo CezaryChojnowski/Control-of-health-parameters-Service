@@ -38,7 +38,7 @@ public class TestService {
         if(testRepository.findById(id).isPresent()){
             return testRepository.findById(id).get();
         }
-        throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
+        throw new ObjectNotFoundException(env.getProperty("testNotFound"));
     }
 
     public void deleteTestById(Long id){

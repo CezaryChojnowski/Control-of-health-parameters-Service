@@ -43,4 +43,11 @@ public class ReminderController {
                 )
         );
     }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/{idReminder}")
+    public void removeReminder(
+            @PathVariable Long idReminder){
+        reminderService.deleteReminder(idReminder);
+    }
 }

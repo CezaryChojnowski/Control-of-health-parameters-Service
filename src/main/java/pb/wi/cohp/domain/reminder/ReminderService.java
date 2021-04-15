@@ -4,6 +4,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.InvalidDataException;
+import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.test.TestService;
 import pb.wi.cohp.domain.user.User;
@@ -64,5 +65,13 @@ public class ReminderService {
         LocalDateTime dataTime = LocalDateTime.of(date, time);
         System.out.println(dataTime);
         return dataTime.isAfter(currentLocalDateTime);
+    }
+
+    public void deleteReminder(Long reminderId){
+        try{
+            reminderRepository.deleteById(reminderId);
+        }catch (Exception exception){
+            throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
+        }
     }
 }
