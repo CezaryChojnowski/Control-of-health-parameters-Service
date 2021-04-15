@@ -13,6 +13,7 @@ import pb.wi.cohp.domain.user.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @PropertySource("classpath:en.exception.messages.properties")
@@ -73,5 +74,9 @@ public class ReminderService {
         }catch (Exception exception){
             throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
         }
+    }
+
+    public List<Reminder> getReminders(String username){
+        return reminderRepository.findAllByUser(userService.getUserByUsername(username));
     }
 }
