@@ -166,4 +166,8 @@ public class UserService {
             throw new UserNotFoundException(env.getProperty("emailNotFound"));
         }
     }
+
+    public User getUserByUsername(String username){
+        return userRepository.findUserByUsername(username).get();
+    }
 }

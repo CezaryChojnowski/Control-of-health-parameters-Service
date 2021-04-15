@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Test {
 
     @Id
@@ -32,9 +31,8 @@ public class Test {
     @JsonIgnore
     private User user;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "test")
-    private Reminder reminder;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
+    private List<Reminder> reminders = new ArrayList<>();
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Disease.class)

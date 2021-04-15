@@ -22,9 +22,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Getter
     @Id
