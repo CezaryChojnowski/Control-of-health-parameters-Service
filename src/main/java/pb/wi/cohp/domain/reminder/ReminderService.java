@@ -1,16 +1,23 @@
 package pb.wi.cohp.domain.reminder;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import pb.wi.cohp.config.error.exception.InvalidDataException;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.test.TestService;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Service
+@PropertySource("classpath:en.exception.messages.properties")
 public class ReminderService {
+
+    final Environment env;
 
     final ReminderRepository reminderRepository;
 
@@ -18,7 +25,8 @@ public class ReminderService {
 
     final TestService testService;
 
-    public ReminderService(ReminderRepository reminderRepository, UserService userService, TestService testService) {
+    public ReminderService(Environment env, ReminderRepository reminderRepository, UserService userService, TestService testService) {
+        this.env = env;
         this.reminderRepository = reminderRepository;
         this.userService = userService;
         this.testService = testService;
@@ -33,6 +41,9 @@ public class ReminderService {
                                    Long idTest){
         User user = userService.getUserByUsername(username);
         Test test = testService.findTestById(idTest);
+        if(!validDateAndTime(date, time)){
+            throw new InvalidDataException(env.getProperty("invalidReminderDataAndTime"));
+        }
         return reminderRepository
                     .save(
                             new Reminder
@@ -45,5 +56,13 @@ public class ReminderService {
                                     .user(user)
                                     .test(test)
                                     .build());
+    }
+
+    public boolean validDateAndTime(LocalDate date, LocalTime time){
+        LocalDateTime currentLocalDateTime = LocalDateTime.now();
+        System.out.println(currentLocalDateTime);
+        LocalDateTime dataTime = LocalDateTime.of(date, time);
+        System.out.println(dataTime);
+        return dataTime.isAfter(currentLocalDateTime);
     }
 }
