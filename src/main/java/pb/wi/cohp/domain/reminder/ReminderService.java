@@ -79,4 +79,12 @@ public class ReminderService {
     public List<Reminder> getReminders(String username){
         return reminderRepository.findAllByUser(userService.getUserByUsername(username));
     }
+
+    public Reminder getReminder(Long idReminder){
+        try{
+            return reminderRepository.findById(idReminder).get();
+        }catch (Exception exception){
+            throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
+        }
+    }
 }

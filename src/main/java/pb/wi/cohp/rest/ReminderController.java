@@ -51,11 +51,20 @@ public class ReminderController {
         reminderService.deleteReminder(idReminder);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping()
-    public ResponseEntity<?> getReminders(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)principal).getUsername();
+
+    @PreAuthorize("#username == authentication.principal.username")
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getReminders(@PathVariable String username){
         return ResponseEntity.ok(reminderService.getReminders(username));
+    }
+
+    @PreAuthorize("#username == authentication.principal.username")
+    @GetMapping("/{username}/{idReminder}")
+    public ResponseEntity<?> getReminder(
+            @PathVariable Long idReminder,
+            @PathVariable String username){
+        return ResponseEntity.ok(
+                reminderService.getReminder(idReminder)
+        );
     }
 }
