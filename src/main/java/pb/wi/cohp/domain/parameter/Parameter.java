@@ -7,6 +7,7 @@ import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 import pb.wi.cohp.domain.test.Test;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
@@ -21,6 +22,7 @@ public class Parameter {
     private Long id;
 
     @Setter
+    @NotEmpty(message = "{parameter.name.notEmpty}")
     private String name;
 
     @Setter

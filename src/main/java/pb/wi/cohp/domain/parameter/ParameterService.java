@@ -1,21 +1,29 @@
 package pb.wi.cohp.domain.parameter;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.test.Test;
+import pb.wi.cohp.domain.test.TestDTO;
 import pb.wi.cohp.domain.test.TestRepository;
 
 import java.util.List;
 
 @Service
+@PropertySource("classpath:en.exception.messages.properties")
 public class ParameterService {
 
     final ParameterRepository parameterRepository;
 
     final TestRepository testRepository;
 
-    public ParameterService(ParameterRepository parameterRepository, TestRepository testRepository){
+    final Environment env;
+
+    public ParameterService(ParameterRepository parameterRepository, TestRepository testRepository, Environment env){
         this.parameterRepository = parameterRepository;
         this.testRepository = testRepository;
+        this.env = env;
     }
 
     public void createParameter(List<Parameter> parameterList, Long testId){
@@ -32,11 +40,30 @@ public class ParameterService {
         }
     }
 
-    public void deleteParameter(Long parameterId){
-        parameterRepository.deleteById(parameterId);
+    public void createParameter(List<Parameter> parameterList, TestDTO testDTO){
+        Test test = testRepository.findById(testDTO.getId()).get();
+        for(Parameter parameter: parameterList){
+            parameterRepository
+                    .save(
+                            new Parameter
+                                    .ParameterBuilder()
+                                    .id(parameter.getId())
+                                    .name(parameter.getName())
+                                    .test(test)
+                                    .build()
+                    );
+        }
     }
 
-    public Parameter editParameter(Parameter parameter){
-        return parameterRepository.save(parameter);
+    public void deleteParameter(Long parameterId){
+        Parameter parameter = findParameterById(parameterId);
+        parameterRepository.delete(parameter);
+    }
+
+    public Parameter findParameterById(Long id){
+        if(parameterRepository.findById(id).isPresent()){
+            return parameterRepository.findById(id).get();
+        }
+        throw new ObjectNotFoundException(env.getProperty("parameterNotFound"));
     }
 }

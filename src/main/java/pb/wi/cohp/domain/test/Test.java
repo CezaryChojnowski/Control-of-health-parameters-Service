@@ -8,6 +8,7 @@ import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.reminder.Reminder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Test {
     private Long id;
 
     @Setter
+    @NotEmpty(message = "{test.name.notEmpty}")
     private String name;
 
     @Setter
@@ -40,6 +42,7 @@ public class Test {
     @JsonIgnore
     private Disease disease;
 
+    @Setter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     private List<Parameter> parameters = new ArrayList<>();
 }
