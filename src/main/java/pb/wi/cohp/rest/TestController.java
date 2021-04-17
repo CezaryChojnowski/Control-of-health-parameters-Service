@@ -1,28 +1,36 @@
 package pb.wi.cohp.rest;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
 import pb.wi.cohp.domain.test.Test;
+import pb.wi.cohp.domain.test.TestDTO;
 import pb.wi.cohp.domain.test.TestService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/tests")
 @CrossOrigin
+@Validated
 public class TestController {
 
     final TestService testService;
 
     final ParameterService parameterService;
 
-    public TestController(TestService testService, ParameterService parameterService) {
+    final ModelMapper modelMapper;
+
+    public TestController(TestService testService, ParameterService parameterService, ModelMapper modelMapper) {
         this.testService = testService;
         this.parameterService = parameterService;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -34,13 +42,7 @@ public class TestController {
         Test test = testService.createTest(testName);
         parameterService.createParameter(parameterList, test.getId());
         return ResponseEntity
-                .ok(
-                        testService
-                                .findTestById(
-                                        test
-                                                .getId()
-                                )
-                );
+                .ok(convertToDto(testService.findTestById(test.getId())));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -51,20 +53,20 @@ public class TestController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
-    public ResponseEntity<?> editTest(@Valid @RequestBody Test test){
-        return ResponseEntity.ok(testService.editTest(test));
+    public ResponseEntity<?> editTest(@Valid @RequestBody TestDTO test){
+        return ResponseEntity.ok(convertToDto(testService.editTest(test)));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<?> getTests(){
-        return ResponseEntity.ok(testService.getTests());
+        return ResponseEntity.ok(convertToDto(testService.getTests()));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{testId}")
     public ResponseEntity<?> getTest(@PathVariable Long testId){
-        return ResponseEntity.ok(testService.findTestById(testId));
+        return ResponseEntity.ok(convertToDto(testService.findTestById(testId)));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -74,8 +76,20 @@ public class TestController {
         parameterService.createParameter(parameterList, testId);
         return ResponseEntity
                 .ok(
-                        testService
-                                .findTestById(testId)
+                        convertToDto(testService
+                                .findTestById(testId))
                 );
+    }
+
+    private TestDTO convertToDto(Test test){
+        return modelMapper.map(test, TestDTO.class);
+    }
+
+    private List<TestDTO> convertToDto(List<Test> tests){
+        List<TestDTO> result = new ArrayList<>();
+        for(Test test: tests){
+            result.add(modelMapper.map(test, TestDTO.class));
+        }
+        return result;
     }
 }

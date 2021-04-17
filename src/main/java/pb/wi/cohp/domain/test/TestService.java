@@ -46,8 +46,11 @@ public class TestService {
         testRepository.delete(test);
     }
 
-    public Test editTest(Test test){
-        return testRepository.save(test);
+    public Test editTest(TestDTO test){
+        Test result = findTestById(test.getId());
+        result.setName(test.getName());
+        parameterService.createParameter(test.getParameters(), test);
+        return testRepository.save(result);
     }
 
     public List<Test> getTests(){
