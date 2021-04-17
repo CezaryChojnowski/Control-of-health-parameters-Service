@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.IncorrectTokenException;
+import pb.wi.cohp.config.error.exception.InvalidDataException;
 import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.email.EmailService;
 import pb.wi.cohp.domain.role.ERole;
@@ -13,14 +14,14 @@ import pb.wi.cohp.domain.role.Role;
 import pb.wi.cohp.domain.role.RoleRepository;
 import pb.wi.cohp.payload.response.MessageResponse;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import javax.validation.ConstraintValidatorContext;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @PropertySource("classpath:en.exception.messages.properties")
-@PropertySource("classpath:en.validation.messages.properties")
+@PropertySource("classpath:messages_en.properties")
 public class UserService {
     final UserRepository userRepository;
 
@@ -159,15 +160,24 @@ public class UserService {
             if(!user.getResetPasswordToken().equals(tokenToResetPassword)){
                 return null;
             }
-            user.setPassword(encoder.encode(password));
-            user.setResetPasswordToken(null);
-            return userRepository.save(user);
-        }catch (Exception ignored){
+            if(isValid(password)) {
+                user.setPassword(encoder.encode(password));
+                user.setResetPasswordToken(null);
+                return userRepository.save(user);
+            }
+            throw new InvalidDataException(env.getProperty("user.password.valid"));
+        }catch (NoSuchElementException ignored){
             throw new ObjectNotFoundException(env.getProperty("emailNotFound"));
         }
     }
 
     public User getUserByUsername(String username){
         return userRepository.findUserByUsername(username).get();
+    }
+
+    public boolean isValid(String password) {
+        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }
