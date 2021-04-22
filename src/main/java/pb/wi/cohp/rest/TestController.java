@@ -106,7 +106,14 @@ public class TestController {
         return ResponseEntity.ok(convertToDto(testService.findTestById(testId)));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.principal.username")
+    @GetMapping("/users/{username}/{testId}")
+    public ResponseEntity<?> getTestByUser(@PathVariable Long testId,
+                                           @PathVariable String username){
+        return ResponseEntity.ok(convertToDto(testService.findTestByIdAndUser(testId, username)));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PutMapping("/{testId}")
     public ResponseEntity<?> addParametersToTest(@PathVariable Long testId,
                                                  @Valid @RequestBody List<Parameter> parameterList){

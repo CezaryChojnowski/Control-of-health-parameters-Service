@@ -58,6 +58,14 @@ public class TestService {
         throw new ObjectNotFoundException(env.getProperty("testNotFound"));
     }
 
+    public Test findTestByIdAndUser(Long id, String username){
+        User user = userService.getUserByUsername(username);
+        if(testRepository.findByIdAndUser(id, user).isPresent()){
+            return testRepository.findByIdAndUser(id, user).get();
+        }
+        throw new ObjectNotFoundException(env.getProperty("testNotFound"));
+    }
+
     public void deleteTestById(Long id){
         Test test = findTestById(id);
         testRepository.delete(test);
