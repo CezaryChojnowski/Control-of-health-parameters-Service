@@ -34,6 +34,17 @@ public class TestService {
                 );
     }
 
+    public Test createTest(String name, String username){
+        User user = userService.getUserByUsername(username);
+        return testRepository
+                .save(
+                        new Test
+                                .TestBuilder()
+                                .name(name)
+                                .build()
+                );
+    }
+
     public Test findTestById(Long id){
         if(testRepository.findById(id).isPresent()){
             return testRepository.findById(id).get();

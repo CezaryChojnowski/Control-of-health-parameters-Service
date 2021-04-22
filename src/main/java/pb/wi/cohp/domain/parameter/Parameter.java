@@ -26,7 +26,7 @@ public class Parameter {
     private String name;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Test.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Test.class)
     @JoinColumn(name="id_test")
     @JsonIgnore
     private Test test;

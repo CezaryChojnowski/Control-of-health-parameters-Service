@@ -45,6 +45,19 @@ public class TestController {
                 .ok(convertToDto(testService.findTestById(test.getId())));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/users/{testName}")
+    public ResponseEntity<?> createTestByUser(
+            @PathVariable String testName,
+            @Valid @RequestBody List<Parameter> parameterList){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        Test test = testService.createTest(testName, username);
+        parameterService.createParameter(parameterList, test.getId());
+        return ResponseEntity
+                .ok(convertToDto(testService.findTestById(test.getId())));
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{testId}")
     public void removeTest(@PathVariable Long testId){

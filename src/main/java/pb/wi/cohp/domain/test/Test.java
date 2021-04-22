@@ -43,6 +43,6 @@ public class Test {
     private Disease disease;
 
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "test")
     private List<Parameter> parameters = new ArrayList<>();
 }
