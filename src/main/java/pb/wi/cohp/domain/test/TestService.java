@@ -41,6 +41,7 @@ public class TestService {
                         new Test
                                 .TestBuilder()
                                 .name(name)
+                                .user(user)
                                 .build()
                 );
     }

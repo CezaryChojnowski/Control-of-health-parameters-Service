@@ -3,6 +3,8 @@ package pb.wi.cohp.rest;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pb.wi.cohp.domain.parameter.Parameter;
@@ -61,6 +63,13 @@ public class TestController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{testId}")
     public void removeTest(@PathVariable Long testId){
+        testService.deleteTestById(testId);
+    }
+
+    @PreAuthorize("#username == authentication.principal.username")
+    @DeleteMapping("/users/{username}/{testId}")
+    public void removeTestByUser(@PathVariable Long testId,
+                                 @PathVariable String username){
         testService.deleteTestById(testId);
     }
 
