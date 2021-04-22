@@ -34,6 +34,24 @@ public class ReminderService {
         this.testService = testService;
     }
 
+    public Reminder editReminder(LocalDate date,
+                                 LocalTime time,
+                                 String note,
+                                 boolean emailReminder,
+                                 boolean smsReminder,
+                                 Long idReminder){
+        if(!validDateAndTime(date, time)){
+            throw new InvalidDataException(env.getProperty("invalidReminderDataAndTime"));
+        }
+        Reminder reminder = getReminder(idReminder);
+        reminder.setDate(date);
+        reminder.setTime(time);
+        reminder.setNote(note);
+        reminder.setEmailReminder(emailReminder);
+        reminder.setSmsReminder(smsReminder);
+        return reminderRepository.save(reminder);
+    }
+
     public Reminder createReminder(LocalDate date,
                                    LocalTime time,
                                    String note,
@@ -62,9 +80,7 @@ public class ReminderService {
 
     public boolean validDateAndTime(LocalDate date, LocalTime time){
         LocalDateTime currentLocalDateTime = LocalDateTime.now();
-        System.out.println(currentLocalDateTime);
         LocalDateTime dataTime = LocalDateTime.of(date, time);
-        System.out.println(dataTime);
         return dataTime.isAfter(currentLocalDateTime);
     }
 

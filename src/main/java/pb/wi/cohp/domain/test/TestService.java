@@ -54,7 +54,7 @@ public class TestService {
     }
 
     public List<Test> getTests(){
-        return (List<Test>) testRepository.findAll();
+        return (List<Test>) testRepository.findAllByUser(null);
     }
 
 }

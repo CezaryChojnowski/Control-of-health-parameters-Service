@@ -45,6 +45,24 @@ public class ReminderController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping()
+    public ResponseEntity<?> editReminder(
+            @Valid @RequestBody Reminder reminder){
+        return ResponseEntity.ok(
+                reminderService.editReminder(
+                        reminder.getDate(),
+                        reminder.getTime(),
+                        reminder.getNote(),
+                        reminder.isEmailReminder(),
+                        reminder.isSmsReminder(),
+                        reminder.getId()
+                )
+        );
+    }
+
+
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{idReminder}")
     public void removeReminder(
             @PathVariable Long idReminder){
