@@ -92,6 +92,14 @@ public class TestController {
         return ResponseEntity.ok(convertToDto(testService.getTests()));
     }
 
+    @PreAuthorize("#username == authentication.principal.username")
+    @GetMapping("/users/{username}")
+    public ResponseEntity<?> getTests(
+            @PathVariable String username
+    ){
+        return ResponseEntity.ok(convertToDto(testService.getTests(username)));
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{testId}")
     public ResponseEntity<?> getTest(@PathVariable Long testId){

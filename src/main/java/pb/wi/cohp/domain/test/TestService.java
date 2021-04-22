@@ -74,4 +74,12 @@ public class TestService {
         return (List<Test>) testRepository.findAllByUser(null);
     }
 
+    public List<Test> getTests(String username){
+        User user = userService.getUserByUsername(username);
+        List<Test> userTests = testRepository.findAllByUser(user);
+        List<Test> publiclyAvailableTests = testRepository.findAllByUser(null);
+        userTests.addAll(publiclyAvailableTests);
+        return userTests;
+    }
+
 }
