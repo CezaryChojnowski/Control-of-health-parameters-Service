@@ -5,6 +5,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.parameter.ParameterService;
+import pb.wi.cohp.domain.user.User;
+import pb.wi.cohp.domain.user.UserService;
 
 import java.util.List;
 
@@ -18,10 +20,13 @@ public class TestService {
 
     final Environment env;
 
-    public TestService(TestRepository testRepository, ParameterService parameterService, Environment env) {
+    final UserService userService;
+
+    public TestService(TestRepository testRepository, ParameterService parameterService, Environment env, UserService userService) {
         this.testRepository = testRepository;
         this.parameterService = parameterService;
         this.env = env;
+        this.userService = userService;
     }
 
     public Test createTest(String name){

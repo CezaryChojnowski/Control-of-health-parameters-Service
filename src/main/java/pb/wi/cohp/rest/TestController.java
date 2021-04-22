@@ -79,6 +79,13 @@ public class TestController {
         return ResponseEntity.ok(convertToDto(testService.editTest(test)));
     }
 
+    @PreAuthorize("#username == authentication.principal.username")
+    @PutMapping("/users/{username}")
+    public ResponseEntity<?> editTest(@Valid @RequestBody TestDTO test,
+                                      @PathVariable String username){
+        return ResponseEntity.ok(convertToDto(testService.editTest(test)));
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<?> getTests(){
