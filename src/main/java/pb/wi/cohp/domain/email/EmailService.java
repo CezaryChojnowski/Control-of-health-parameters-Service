@@ -6,6 +6,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.domain.user.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Service
 public class EmailService {
 
@@ -47,6 +50,15 @@ public class EmailService {
         message.setTo(email);
         message.setSubject("Your token to reset password account");
         message.setText("http://localhost:8080/users/token/"+email+"/"+token);
+        emailSender.send(message);
+    }
+
+    public void sendEmailWithReminder(String email, LocalDate date, LocalTime time, String testName) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(emailFrom);
+        message.setTo(email);
+        message.setSubject("Don't forget to measure " + testName);
+        message.setText(date + " " + time + " " + testName);
         emailSender.send(message);
     }
 }

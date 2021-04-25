@@ -103,4 +103,9 @@ public class ReminderService {
             throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
         }
     }
+
+    public List<Reminder> getReminderByDateAndTime(LocalDate date,
+                                                   LocalTime time){
+        return reminderRepository.findAllByDateAndTime(date, time);
+    }
 }
