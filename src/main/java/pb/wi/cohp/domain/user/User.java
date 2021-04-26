@@ -86,6 +86,7 @@ public class User {
 //    @JsonIgnore
 //    private List<Range> ranges = new ArrayList<>();
 
+    @Setter
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
