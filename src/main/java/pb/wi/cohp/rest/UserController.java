@@ -167,4 +167,13 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/admin/{email}")
+    public ResponseEntity<?> changeRole(@PathVariable String email){
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(
+                convertToDto(userService.changeRole(user))
+        );
+    }
+
 }

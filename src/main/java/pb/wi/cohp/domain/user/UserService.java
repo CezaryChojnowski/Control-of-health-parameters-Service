@@ -14,7 +14,6 @@ import pb.wi.cohp.domain.role.Role;
 import pb.wi.cohp.domain.role.RoleRepository;
 import pb.wi.cohp.payload.response.MessageResponse;
 
-import javax.validation.ConstraintValidatorContext;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -179,5 +178,13 @@ public class UserService {
         Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$");
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    public User changeRole(User user) {
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN.name());
+        roles.add(userRole);
+        user.setRoles(roles);
+        return userRepository.save(user);
     }
 }
