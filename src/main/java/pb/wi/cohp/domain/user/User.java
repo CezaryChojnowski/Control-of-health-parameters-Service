@@ -53,6 +53,7 @@ public class User {
     private String email;
 
     @Setter
+    @ValidPassword(message = "{user.password.valid}")
     private String password;
 
     @Setter
@@ -87,7 +88,7 @@ public class User {
 //    private List<Range> ranges = new ArrayList<>();
 
     @Setter
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "id_user"),

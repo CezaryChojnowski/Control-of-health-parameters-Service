@@ -221,7 +221,7 @@ class UserServiceSpec extends Specification{
     }
 
     def "Should thrown ObjectNotFound when user with given email doesnt exist"(){
-        and: "findUserByEmail return empty optional "
+        given: "findUserByEmail return empty optional "
         userRepository.findUserByEmail(_ as String) >> Optional.empty()
         when:"Try change password"
         userService.changePassword(testEmail, testTokenToResetPassword, testPassword)
@@ -251,7 +251,7 @@ class UserServiceSpec extends Specification{
     }
 
     def "Should thrown ObjectNotFoundExpcetion when user with given email doesnt exist"(){
-        and: "findUserByEmail return empty optional"
+        given: "findUserByEmail return empty optional"
         userRepository.findUserByEmail(_ as String) >> Optional.empty()
         when: "Try set token to reset password"
         userService.setTokenToResetPassword(testEmail)
