@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.env.Environment
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.TestPropertySource
 import org.springframework.transaction.annotation.Transactional
 import pb.wi.cohp.domain.email.EmailService
 import pb.wi.cohp.domain.role.RoleRepository
@@ -18,6 +19,7 @@ import javax.validation.ConstraintViolationException
 @ContextConfiguration
 @SpringBootTest
 @Category(IntegrationTest.class)
+@TestPropertySource("/application-test.properties")
 class UserServiceTest extends Specification{
 
     @Autowired
