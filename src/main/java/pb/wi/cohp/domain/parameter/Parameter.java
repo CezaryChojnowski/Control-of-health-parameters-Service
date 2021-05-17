@@ -35,8 +35,8 @@ public class Parameter {
 //    @JsonIgnore
 //    private Range range;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_measureparameter", referencedColumnName = "id")
-    @JsonIgnore
-    private MeasureParameter measureParameter;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id_measureparameter", referencedColumnName = "id")
+//    @JsonIgnore
+//    private MeasureParameter measureParameter;
 }

@@ -2,6 +2,7 @@ package pb.wi.cohp.domain.measure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 
@@ -14,7 +15,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
+@Builder
 public class Measure {
 
     @Id
@@ -33,8 +35,15 @@ public class Measure {
     @JsonIgnore
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "measure")
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Test.class)
+    @JoinColumn(name="id_test")
     @JsonIgnore
-    private List<MeasureParameter> measureParameterList = new ArrayList<>();
+    private Test test;
+
+    @Setter
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = MeasureParameter.class)
+    @JsonIgnore
+    private List<MeasureParameter> measureParameterList;
 
 }
