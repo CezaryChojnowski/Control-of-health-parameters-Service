@@ -35,6 +35,7 @@ public class ParameterService {
                                     .ParameterBuilder()
                                     .name(parameter.getName())
                                     .test(test)
+                                    .hidden(false)
                                     .build()
                     );
         }
@@ -48,6 +49,7 @@ public class ParameterService {
                             new Parameter
                                     .ParameterBuilder()
                                     .id(parameter.getId())
+                                    .hidden(false)
                                     .name(parameter.getName())
                                     .test(test)
                                     .build()
@@ -57,12 +59,14 @@ public class ParameterService {
 
     public void deleteParameter(Long parameterId){
         Parameter parameter = findParameterById(parameterId);
-        parameterRepository.delete(parameter);
+        parameter.setHidden(true);
+        parameterRepository.save(parameter);
+//        parameterRepository.delete(parameter);
     }
 
     public Parameter findParameterById(Long id){
-        if(parameterRepository.findById(id).isPresent()){
-            return parameterRepository.findById(id).get();
+        if(parameterRepository.findParameterByIdAndHiddenFalse(id).isPresent()){
+            return parameterRepository.findParameterByIdAndHiddenFalse(id).get();
         }
         throw new ObjectNotFoundException(env.getProperty("parameterNotFound"));
     }

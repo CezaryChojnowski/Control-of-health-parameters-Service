@@ -70,6 +70,7 @@ public class ReminderService {
                                     .ReminderBuilder()
                                     .date(date)
                                     .time(time)
+                                    .hidden(false)
                                     .note(note)
                                     .emailReminder(emailReminder)
                                     .smsReminder(smsReminder)
@@ -86,19 +87,21 @@ public class ReminderService {
 
     public void deleteReminder(Long reminderId){
         try{
-            reminderRepository.deleteById(reminderId);
+            Reminder reminder = reminderRepository.findByIdAndHiddenFalse(reminderId).get();
+            reminder.setHidden(true);
+            reminderRepository.save(reminder);
         }catch (Exception exception){
             throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
         }
     }
 
     public List<Reminder> getReminders(String username){
-        return reminderRepository.findAllByUser(userService.getUserByUsername(username));
+        return reminderRepository.findAllByUserAndHiddenFalse(userService.getUserByUsername(username));
     }
 
     public Reminder getReminder(Long idReminder){
         try{
-            return reminderRepository.findById(idReminder).get();
+            return reminderRepository.findByIdAndHiddenFalse(idReminder).get();
         }catch (Exception exception){
             throw new ObjectNotFoundException(env.getProperty("reminderNotFound"));
         }
@@ -106,6 +109,6 @@ public class ReminderService {
 
     public List<Reminder> getReminderByDateAndTime(LocalDate date,
                                                    LocalTime time){
-        return reminderRepository.findAllByDateAndTime(date, time);
+        return reminderRepository.findAllByDateAndTimeAndHiddenFalse(date, time);
     }
 }

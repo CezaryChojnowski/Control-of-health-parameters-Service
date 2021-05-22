@@ -4,10 +4,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
+import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +37,7 @@ public class TestService {
                         new Test
                                 .TestBuilder()
                                 .name(name)
+                                .hidden(false)
                                 .build()
                 );
     }
@@ -46,6 +49,7 @@ public class TestService {
                         new Test
                                 .TestBuilder()
                                 .name(name)
+                                .hidden(false)
                                 .user(user)
                                 .build()
                 );
@@ -68,7 +72,9 @@ public class TestService {
 
     public void deleteTestById(Long id){
         Test test = findTestById(id);
-        testRepository.delete(test);
+        test.setHidden(true);
+//        testRepository.delete(test);
+        testRepository.save(test);
     }
 
     public Test editTest(TestDTO test){
@@ -79,14 +85,25 @@ public class TestService {
     }
 
     public List<Test> getTests(){
-        return (List<Test>) testRepository.findAllByUser(null);
+        List<Test> result = testRepository.findAllByUserAndHiddenIsFalse(null);
+        result.forEach(
+                e -> {
+                    e.getParameters().removeIf(Parameter::getHidden);
+                }
+        );
+        return result;
     }
 
     public List<Test> getTests(String username){
         User user = userService.getUserByUsername(username);
-        List<Test> userTests = testRepository.findAllByUser(user);
-        List<Test> publiclyAvailableTests = testRepository.findAllByUser(null);
+        List<Test> userTests = testRepository.findAllByUserAndHiddenIsFalse(user);
+        List<Test> publiclyAvailableTests = testRepository.findAllByUserAndHiddenIsFalse(null);
         userTests.addAll(publiclyAvailableTests);
+        userTests.forEach(
+                e -> {
+                    e.getParameters().removeIf(Parameter::getHidden);
+                }
+        );
         return userTests;
     }
 

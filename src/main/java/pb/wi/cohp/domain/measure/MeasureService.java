@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 import pb.wi.cohp.domain.measureParameter.MeasureParameterRepository;
+import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.user.User;
 
@@ -29,22 +30,27 @@ public class MeasureService {
                         .date(date)
                         .note(note)
                         .user(user)
+                        .hidden(false)
                         .test(test)
                 .build()
         );
     }
 
     public void removeMeasure(Long id){
-        List<MeasureParameter> measureParameterList = measureParameterRepository
-                .findAllByMeasureId(id);
-        measureParameterRepository.deleteAll(measureParameterList);
+        Measure measure = measureRepository.findByIdAndHiddenFalse(id).get();
+        measure.setHidden(true);
+        List<MeasureParameter> measureParameterList = measure.getMeasureParameterList();
+        for(int i=0; i<measureParameterList.size(); i++){
+            MeasureParameter measureParameter = measureParameterList.get(i);
+            measureParameter.setHidden(true);
+        }
     }
 
     public List<Measure> getMeasuresByUser(String username){
-        return measureRepository.findAllByUser_Username(username);
+        return measureRepository.findAllByUser_UsernameAndHiddenFalse(username);
     }
 
     public Measure getMeasureById(Long id){
-        return measureRepository.findById(id).get();
+        return measureRepository.findByIdAndHiddenFalse(id).get();
     }
 }

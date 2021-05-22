@@ -56,6 +56,7 @@ public class MeasureParameterService {
                     .MeasureParameterBuilder()
                     .measure(measure)
                     .parameter(parameter)
+                    .hidden(false)
                     .value(value.getValue())
                     .build();
             measureParameterRepository.save(
