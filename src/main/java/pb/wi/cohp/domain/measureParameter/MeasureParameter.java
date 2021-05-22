@@ -26,6 +26,9 @@ public class MeasureParameter {
     private Double value;
 
     @Setter
+    private Boolean hidden;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Measure.class, cascade = CascadeType.ALL)
     @JoinColumn(name="id_measure")
     @JsonIgnore

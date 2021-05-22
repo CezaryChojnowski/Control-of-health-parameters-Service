@@ -28,6 +28,10 @@ public class Test {
     private String name;
 
     @Setter
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hidden;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name="id_user")
     @JsonIgnore

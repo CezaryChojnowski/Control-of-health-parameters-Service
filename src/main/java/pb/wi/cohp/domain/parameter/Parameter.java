@@ -26,6 +26,10 @@ public class Parameter {
     private String name;
 
     @Setter
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hidden;
+
+    @Setter
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Test.class)
     @JoinColumn(name="id_test")
     @JsonIgnore
