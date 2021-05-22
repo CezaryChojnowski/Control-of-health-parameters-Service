@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TestRepository extends CrudRepository<Test, Long> {
-    List<Test> findAllByUser(User user);
+    List<Test> findAllByUserAndHiddenIsFalse(User user);
 
     Optional<Test> findByIdAndUser(Long id, User user);
 }
