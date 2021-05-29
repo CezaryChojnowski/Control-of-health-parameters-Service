@@ -17,10 +17,12 @@ import pb.wi.cohp.config.error.exception.UserDoesNotHaveActiveAccountException;
 import pb.wi.cohp.config.jwt.JwtUtils;
 import pb.wi.cohp.config.jwt.service.UserDetailsImpl;
 import pb.wi.cohp.domain.email.EmailService;
+import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserDTO;
 import pb.wi.cohp.payload.request.LoginRequest;
 import pb.wi.cohp.payload.request.SignupRequestAdmin;
+import pb.wi.cohp.payload.response.CurrentUser;
 import pb.wi.cohp.payload.response.JwtResponse;
 import pb.wi.cohp.payload.response.MessageResponse;
 import pb.wi.cohp.domain.role.RoleRepository;
@@ -176,4 +178,23 @@ public class UserController {
         );
     }
 
+    @GetMapping("/currentUser")
+    public ResponseEntity<?> getInfoAboutCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentPrincipalName = authentication.getName();
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+
+        return ResponseEntity.ok(new CurrentUser(
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
+    }
 }

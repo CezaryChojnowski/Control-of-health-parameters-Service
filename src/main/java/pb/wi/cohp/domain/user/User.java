@@ -53,7 +53,7 @@ public class User {
     private String email;
 
     @Setter
-    @ValidPassword(message = "{user.password.valid}")
+//    @ValidPassword(message = "{user.password.valid}")
     private String password;
 
     @Setter

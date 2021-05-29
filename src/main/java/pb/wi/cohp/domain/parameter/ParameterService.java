@@ -61,7 +61,6 @@ public class ParameterService {
         Parameter parameter = findParameterById(parameterId);
         parameter.setHidden(true);
         parameterRepository.save(parameter);
-//        parameterRepository.delete(parameter);
     }
 
     public Parameter findParameterById(Long id){

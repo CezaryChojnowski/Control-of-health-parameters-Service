@@ -17,7 +17,6 @@ public class ParameterController {
         this.parameterService = parameterService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{parameterId}")
     public void removeParameter(@PathVariable Long parameterId){
         parameterService.deleteParameter(parameterId);
