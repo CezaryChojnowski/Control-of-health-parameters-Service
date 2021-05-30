@@ -11,8 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Setter
+@EqualsAndHashCode
 public class TestDTO {
     private Long id;
     private String name;
     List<Parameter> parameters;
+    boolean owner;
 }
