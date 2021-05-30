@@ -38,6 +38,7 @@ public class TestService {
                                 .TestBuilder()
                                 .name(name)
                                 .hidden(false)
+                                .owner(false)
                                 .build()
                 );
     }
@@ -51,6 +52,7 @@ public class TestService {
                                 .name(name)
                                 .hidden(false)
                                 .user(user)
+                                .owner(true)
                                 .build()
                 );
     }
@@ -77,10 +79,10 @@ public class TestService {
         testRepository.save(test);
     }
 
-    public Test editTest(TestDTO test){
+    public Test editTest(TestDTO test, boolean isAdmin){
         Test result = findTestById(test.getId());
         result.setName(test.getName());
-        parameterService.createParameter(test.getParameters(), test);
+        parameterService.createParameter(test.getParameters(), test, isAdmin);
         return testRepository.save(result);
     }
 

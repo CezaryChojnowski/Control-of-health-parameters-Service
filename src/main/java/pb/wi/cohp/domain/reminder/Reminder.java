@@ -17,6 +17,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
 public class Reminder {
 
     @Id

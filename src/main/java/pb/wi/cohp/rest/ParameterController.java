@@ -1,6 +1,5 @@
 package pb.wi.cohp.rest;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pb.wi.cohp.domain.parameter.ParameterService;

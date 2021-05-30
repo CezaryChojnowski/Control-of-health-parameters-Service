@@ -3,6 +3,8 @@ package pb.wi.cohp.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pb.wi.cohp.Mapper;
 import pb.wi.cohp.domain.measure.MeasureService;
@@ -26,10 +28,21 @@ public class MeasureController {
         measureService.removeMeasure(id);
     }
 
-    @PreAuthorize("#username == authentication.principal.username")
-    @GetMapping("/users/{username}")
-    public ResponseEntity<?> getTests(@PathVariable String username){
-        return ResponseEntity.ok(mapper.convertToMeasureDTOList(measureService.getMeasuresByUser(username)));
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping
+    public ResponseEntity<?> getTests(@RequestParam(required = false) Integer page){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentLoggedUser_Username = authentication.getName();
+        return ResponseEntity.ok(
+                mapper.
+                        convertToMeasureDTOList(
+                                measureService.
+                                        getMeasuresByUser(
+                                                currentLoggedUser_Username,
+                                                page != null && page>=0 ? page : 0
+                                        )
+                        )
+        );
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

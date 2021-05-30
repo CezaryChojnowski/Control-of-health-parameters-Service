@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class Test {
 
     @Id
@@ -26,6 +27,8 @@ public class Test {
     @Setter
     @NotEmpty(message = "{test.name.notEmpty}")
     private String name;
+
+    boolean owner = false;
 
     @Setter
     @Column(columnDefinition = "boolean default false")

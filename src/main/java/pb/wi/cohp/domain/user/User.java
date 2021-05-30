@@ -7,6 +7,7 @@ import pb.wi.cohp.config.validator.*;
 import pb.wi.cohp.domain.disease.Disease;
 import pb.wi.cohp.domain.measure.Measure;
 //import pb.wi.cohp.domain.range.Range;
+import pb.wi.cohp.domain.range.Range;
 import pb.wi.cohp.domain.reminder.Reminder;
 import pb.wi.cohp.domain.role.Role;
 import pb.wi.cohp.domain.test.Test;
@@ -23,6 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class User {
     @Getter
     @Id
@@ -83,9 +85,9 @@ public class User {
     @JsonIgnore
     private List<Test> tests = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-//    @JsonIgnore
-//    private List<Range> ranges = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private List<Range> ranges = new ArrayList<>();
 
     @Setter
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

@@ -3,9 +3,14 @@ package pb.wi.cohp.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pb.wi.cohp.domain.measureParameter.dto.MeasureParameterDTO;
 import pb.wi.cohp.domain.measureParameter.MeasureParameterService;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/measuresParameter")
@@ -17,18 +22,20 @@ public class MeasureParameterController {
         this.measureParameterService = measureParameterService;
     }
 
-    @PreAuthorize("#username == authentication.principal.username")
-    @PostMapping("/{username}")
-    public ResponseEntity<?> createMeasureParameter(@RequestBody MeasureParameterDTO measureParameterDTO,
-                                                    @PathVariable String username){
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping
+    public ResponseEntity<?> createMeasureParameter(@RequestBody MeasureParameterDTO measureParameterDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentLoggedUser_Username = authentication.getName();
         measureParameterService.createMeasureParameter(
                 measureParameterDTO.getValues(),
-                username,
+                currentLoggedUser_Username,
                 measureParameterDTO.getDate(),
                 measureParameterDTO.getNote(),
                 measureParameterDTO.getTestId()
         );
-        return ResponseEntity.ok(200);
+        List<String> result = measureParameterService.checkIfMeasuresIsOverRange(measureParameterDTO.getValues(), currentLoggedUser_Username);
+        return ResponseEntity.ok(result);
     }
 
 }

@@ -16,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 //@ToString
 @Builder
+@EqualsAndHashCode
 public class MeasureParameter {
 
     @Id

@@ -1,5 +1,6 @@
 package pb.wi.cohp.domain.measure;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Service
 public class MeasureService {
+
+    private static final int page_SIZE = 10;
 
     final MeasureRepository measureRepository;
 
@@ -46,8 +49,8 @@ public class MeasureService {
         }
     }
 
-    public List<Measure> getMeasuresByUser(String username){
-        return measureRepository.findAllByUser_UsernameAndHiddenFalse(username);
+    public List<Measure> getMeasuresByUser(String username, int page){
+        return measureRepository.findAllByUser_UsernameAndHiddenFalse(username, PageRequest.of(page, page_SIZE));
     }
 
     public Measure getMeasureById(Long id){

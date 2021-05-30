@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 //import pb.wi.cohp.domain.range.Range;
+import pb.wi.cohp.domain.range.Range;
 import pb.wi.cohp.domain.test.Test;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,6 +18,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Builder
 @ToString
+@EqualsAndHashCode
 public class Parameter {
 
     @Id
@@ -35,7 +39,7 @@ public class Parameter {
     @JsonIgnore
     private Test test;
 
-//    @OneToOne(mappedBy = "parameter")
+//    @OneToMany(mappedBy = "parameter")
 //    @JsonIgnore
 //    private Range range;
 
@@ -43,4 +47,8 @@ public class Parameter {
 //    @JoinColumn(name = "id_measureparameter", referencedColumnName = "id")
 //    @JsonIgnore
 //    private MeasureParameter measureParameter;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parameter")
+    @JsonIgnore
+    private List<Range> ranges = new ArrayList<>();
 }

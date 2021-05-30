@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
+@EqualsAndHashCode
 @Builder
 public class Measure {
 
