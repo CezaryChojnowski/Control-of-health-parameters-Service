@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pb.wi.cohp.domain.measure.Measure;
 import pb.wi.cohp.domain.measure.MeasureRepository;
 import pb.wi.cohp.domain.measure.MeasureService;
+import pb.wi.cohp.domain.measureParameter.dto.MeasureParameterDTO;
 import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
 import pb.wi.cohp.domain.range.Range;
@@ -69,6 +70,19 @@ public class MeasureParameterService {
         }
         measure.setMeasureParameterList(measureParameterList);
         measureRepository.save(measure);
+    }
+
+    public void editMeasureParameter(MeasureParameterDTO measureParameterDTO){
+        List<MeasureParameter> measureParameters = measureParameterRepository.findAllByMeasureId(measureParameterDTO.getId());
+        for(MeasureParameter measureParameter: measureParameters){
+            measureParameter.setValue(measureParameterDTO.getValues().get(measureParameter.getParameter().getId()));
+            measureParameterRepository.save(measureParameter);
+        }
+        Measure measure = measureRepository.findByIdAndHiddenFalse(measureParameterDTO.getId()).get();
+        measure.setDate(measureParameterDTO.getDate());
+        measure.setNote(measureParameterDTO.getNote());
+        measureRepository.save(measure);
+
     }
 
     public List<String> checkIfMeasuresIsOverRange(HashMap<Long, Double> values, String username){

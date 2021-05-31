@@ -11,6 +11,7 @@ import java.util.HashMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MeasureParameterDTO {
+    public Long id;
     public HashMap<Long, Double> values;
     public LocalDate date;
     public String note;

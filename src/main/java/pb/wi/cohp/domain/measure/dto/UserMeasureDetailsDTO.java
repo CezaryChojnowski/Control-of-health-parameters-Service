@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class UserMeasureDetailsDTO {
+    public Long id;
     public String testName;
     public LocalDate date;
     public String note;

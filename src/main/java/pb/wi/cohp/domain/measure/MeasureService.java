@@ -2,10 +2,8 @@ package pb.wi.cohp.domain.measure;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pb.wi.cohp.domain.measureParameter.MeasureParameter;
 import pb.wi.cohp.domain.measureParameter.MeasureParameterRepository;
-import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.user.User;
 
@@ -47,6 +45,7 @@ public class MeasureService {
             MeasureParameter measureParameter = measureParameterList.get(i);
             measureParameter.setHidden(true);
         }
+        measureRepository.save(measure);
     }
 
     public List<Measure> getMeasuresByUser(String username, int page){

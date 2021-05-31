@@ -38,4 +38,14 @@ public class MeasureParameterController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping
+    public ResponseEntity<?> editMeasureParameter(@RequestBody MeasureParameterDTO measureParameterDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentLoggedUser_Username = authentication.getName();
+        measureParameterService.editMeasureParameter(measureParameterDTO);
+        List<String> result = measureParameterService.checkIfMeasuresIsOverRange(measureParameterDTO.getValues(), currentLoggedUser_Username);
+        return ResponseEntity.ok(result);
+    }
+
 }

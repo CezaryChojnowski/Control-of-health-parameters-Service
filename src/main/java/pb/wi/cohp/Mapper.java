@@ -33,7 +33,7 @@ public class Mapper {
     }
 
     public UserMeasureDetailsDTO convertToUserMeasureDetailsDTO(Measure measure){
-            return new UserMeasureDetailsDTO(measure.getTest().getName(), measure.getDate(), measure.getNote(), convertToMeasureValuesDTO(measure.getMeasureParameterList()));
+            return new UserMeasureDetailsDTO(measure.getId(), measure.getTest().getName(), measure.getDate(), measure.getNote(), convertToMeasureValuesDTO(measure.getMeasureParameterList()));
     }
 
     public List<MeasureValuesDTO> convertToMeasureValuesDTO(List<MeasureParameter> measureParameters){
