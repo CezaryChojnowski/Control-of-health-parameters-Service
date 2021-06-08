@@ -12,5 +12,6 @@ public interface RangeRepository extends JpaRepository<Range, Long> {
     Optional<Range> findByParameter(Parameter parameter);
     Range findByUser(User user);
     Optional<Range> findByUserAndParameter(User user, Parameter parameter);
-    List<Range> findAllByUser_Username(String username, Pageable page);
+    List<Range> findAllByUser_UsernameAndHiddenIsFalse(String username, Pageable page);
+    List<Range> findAllByParameterId(Long id);
 }

@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
+import pb.wi.cohp.domain.range.Range;
 import pb.wi.cohp.domain.range.RangeService;
 import pb.wi.cohp.domain.test.Test;
 import pb.wi.cohp.domain.test.TestDTO;
@@ -117,6 +118,10 @@ public class ParameterService {
         Parameter parameter = findParameterById(parameterId);
         parameter.setHidden(true);
         parameterRepository.save(parameter);
+        List<Range> ranges = rangeService.getRangesByParameterId(parameter.getId());
+        for(Range range: ranges){
+            rangeService.hideRange(range.getId());
+        }
     }
 
     public Parameter findParameterById(Long id){

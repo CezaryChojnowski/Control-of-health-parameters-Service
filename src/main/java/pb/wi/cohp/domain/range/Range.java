@@ -28,6 +28,9 @@ public class Range {
     private Double maxValue;
 
     @Setter
+    private boolean hidden;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name="id_user")
     @JsonIgnore

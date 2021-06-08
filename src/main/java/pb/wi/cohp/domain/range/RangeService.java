@@ -25,6 +25,7 @@ public class RangeService {
                         .minValue((double) 0)
                         .parameter(paramter)
                         .user(user)
+                        .hidden(false)
                         .build()
         );
     }
@@ -46,14 +47,20 @@ public class RangeService {
     }
 
     public List<Range> getRangesByUsername(String username, int page){
-        return rangeRepository.findAllByUser_Username(username, PageRequest.of(page, page_SIZE));
+        return rangeRepository.findAllByUser_UsernameAndHiddenIsFalse(username, PageRequest.of(page, page_SIZE));
     }
 
     public Range editRange(EditRangeDTO editRangeDTO) {
         Optional<Range> range = rangeRepository.findById(editRangeDTO.getId());
         if(range.isPresent()){
-            range.get().setMinValue(editRangeDTO.getMinValue());
-            range.get().setMaxValue(editRangeDTO.getMaxValue());
+            Double min = editRangeDTO.getMinValue();
+            Double max = editRangeDTO.getMaxValue();
+            if(max < min){
+                min = editRangeDTO.getMaxValue();
+                max = editRangeDTO.getMinValue();
+            }
+            range.get().setMinValue(min);
+            range.get().setMaxValue(max);
             return rangeRepository.save(range.get());
         }
         throw new ObjectNotFoundException("");
@@ -61,5 +68,15 @@ public class RangeService {
 
     public Range getById(Long id){
         return rangeRepository.findById(id).get();
+    }
+
+    public void hideRange(Long id){
+        Range range = rangeRepository.findById(id).get();
+        range.setHidden(true);
+        rangeRepository.save(range);
+    }
+
+    public List<Range> getRangesByParameterId(Long id){
+        return rangeRepository.findAllByParameterId(id);
     }
 }
