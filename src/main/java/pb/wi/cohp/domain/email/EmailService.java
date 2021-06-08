@@ -30,7 +30,7 @@ public class EmailService {
         message.setFrom(emailFrom);
         message.setTo(email);
         message.setSubject("Your token to activate account");
-        message.setText("http://localhost:8080/users/"+email+"/"+token);
+        message.setText("https://cohp.herokuapp.com/auth/activate-account/"+email+"/"+token);
         emailSender.send(message);
     }
 
@@ -49,16 +49,16 @@ public class EmailService {
         message.setFrom(emailFrom);
         message.setTo(email);
         message.setSubject("Your token to reset password account");
-        message.setText("http://localhost:8080/users/token/"+email+"/"+token);
+        message.setText("https://cohp.herokuapp.com/auth/reset-password/"+email+"/"+token);
         emailSender.send(message);
     }
 
-    public void sendEmailWithReminder(String email, LocalDate date, LocalTime time, String testName) {
+    public void sendEmailWithReminder(String email, LocalDate date, LocalTime time, String testName, String note) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
         message.setTo(email);
         message.setSubject("Don't forget to measure " + testName);
-        message.setText(date + " " + time + " " + testName);
+        message.setText(date + " " + time + " " + testName + "|"+ note);
         emailSender.send(message);
     }
 }
