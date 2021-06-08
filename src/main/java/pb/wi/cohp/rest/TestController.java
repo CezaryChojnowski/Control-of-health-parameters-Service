@@ -46,7 +46,7 @@ public class TestController {
             @PathVariable String testName,
             @Valid @RequestBody List<Parameter> parameterList){
         Test test = testService.createTest(testName);
-        parameterService.createParameter(parameterList, test.getId(), false, true);
+        parameterService.createParameter(parameterList, test.getId(), true, true);
         return ResponseEntity
                 .ok(convertToDto(testService.findTestById(test.getId())));
     }

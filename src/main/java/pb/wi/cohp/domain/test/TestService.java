@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 import pb.wi.cohp.config.error.exception.ObjectNotFoundException;
 import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
+import pb.wi.cohp.domain.reminder.Reminder;
+import pb.wi.cohp.domain.reminder.ReminderService;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,9 +76,14 @@ public class TestService {
     public void deleteTestById(Long id){
         Test test = findTestById(id);
         test.setHidden(true);
-//        testRepository.delete(test);
         testRepository.save(test);
+        List<Parameter> parameters = test.getParameters();
+        for(Parameter parameter: parameters) {
+            parameterService.deleteParameter(parameter.getId());
+        }
     }
+
+
 
     public Test editTest(TestDTO test, boolean isAdmin){
         Test result = findTestById(test.getId());
