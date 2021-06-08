@@ -1,5 +1,9 @@
 package pb.wi.cohp.rest;
 
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -13,11 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 import pb.wi.cohp.config.error.exception.UserDoesNotHaveActiveAccountException;
 import pb.wi.cohp.config.jwt.JwtUtils;
 import pb.wi.cohp.config.jwt.service.UserDetailsImpl;
 import pb.wi.cohp.domain.email.EmailService;
-import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserDTO;
 import pb.wi.cohp.payload.request.LoginRequest;
@@ -55,6 +59,7 @@ public class UserController {
 
     final ModelMapper modelMapper;
 
+
     public UserController(UserService userService, RoleRepository roleRepository, Environment env, JwtUtils jwtUtils, AuthenticationManager authenticationManager, EmailService emailService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleRepository = roleRepository;
@@ -74,6 +79,7 @@ public class UserController {
                 signupRequest.getPersonalIdNumber(),
                 signupRequest.getEmail(),
                 signupRequest.getPassword(),
+                signupRequest.getPhoneNumber(),
                 userService.generateSomeToken(),
                 false
         );
@@ -197,4 +203,18 @@ public class UserController {
                 userDetails.getEmail(),
                 roles));
     }
+//
+//
+//    public static final String ACCOUNT_SID = System.getenv("ACb2bcda9ff7e45b210431398763a2894f");
+//    public static final String AUTH_TOKEN = System.getenv("d2e9df8d174a2d2121a48a2066190153");
+//
+//    @GetMapping("/testasdsadasads")
+//    public void adddas(){
+//        Twilio.init("ACb2bcda9ff7e45b210431398763a2894f", "d2e9df8d174a2d2121a48a2066190153");
+//        Message message = Message.creator(
+//                new PhoneNumber("+48730301753"),
+//                new PhoneNumber("+12156420894"),
+//                "testtest"
+//        ).create();
+//    }
 }

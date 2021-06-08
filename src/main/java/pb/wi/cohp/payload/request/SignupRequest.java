@@ -34,4 +34,7 @@ public class SignupRequest {
     @ValidPersonalIdNumber(message = "{user.personalIdNumber.valid}")
     @UniquePersonalIdNumber(message = "{user.personalIdNumber.unique}")
     private String personalIdNumber;
+
+    @ValidPhoneNumber(message = "{user.phoneNumber.valid}")
+    private String phoneNumber;
 }

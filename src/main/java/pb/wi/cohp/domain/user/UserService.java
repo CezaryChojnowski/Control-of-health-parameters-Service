@@ -46,6 +46,7 @@ public class UserService {
                            String personalIdNumber,
                            String email,
                            String password,
+                           String phoneNumber,
                            String token,
                            boolean active){
         Set<Role> roles = new HashSet<>();
@@ -60,6 +61,7 @@ public class UserService {
                 .personalIdNumber(personalIdNumber)
                 .roles(roles)
                 .active(active)
+                .phoneNumber(phoneNumber)
                 .token(token)
                 .build();
         user.setPassword(encoder.encode(password));

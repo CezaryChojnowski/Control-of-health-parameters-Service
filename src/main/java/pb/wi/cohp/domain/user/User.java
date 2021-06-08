@@ -59,6 +59,10 @@ public class User {
     private String password;
 
     @Setter
+//    @ValidPhoneNumber(message = "{user.phoneNumber.valid}")
+    private String phoneNumber;
+
+    @Setter
     private boolean active;
 
     @Setter
