@@ -30,7 +30,7 @@ public class MeasureController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
-    public ResponseEntity<?> getTests(@RequestParam(required = false) Integer page){
+    public ResponseEntity<?> getTests(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentLoggedUser_Username = authentication.getName();
         return ResponseEntity.ok(
@@ -38,14 +38,13 @@ public class MeasureController {
                         convertToMeasureDTOList(
                                 measureService.
                                         getMeasuresByUser(
-                                                currentLoggedUser_Username,
-                                                page != null && page>=0 ? page : 0
+                                                currentLoggedUser_Username
                                         )
                         )
         );
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getTest(@PathVariable Long id){
         return ResponseEntity.ok(mapper.convertToUserMeasureDetailsDTO (measureService.getMeasureById(id)));

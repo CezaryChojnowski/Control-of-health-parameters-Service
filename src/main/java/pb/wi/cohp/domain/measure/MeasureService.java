@@ -48,8 +48,8 @@ public class MeasureService {
         measureRepository.save(measure);
     }
 
-    public List<Measure> getMeasuresByUser(String username, int page){
-        return measureRepository.findAllByUser_UsernameAndHiddenFalse(username, PageRequest.of(page, page_SIZE));
+    public List<Measure> getMeasuresByUser(String username){
+        return measureRepository.findAllByUser_UsernameAndHiddenFalse(username);
     }
 
     public Measure getMeasureById(Long id){

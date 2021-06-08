@@ -5,6 +5,7 @@ import pb.wi.cohp.domain.measure.Measure;
 import pb.wi.cohp.domain.measure.MeasureRepository;
 import pb.wi.cohp.domain.measure.MeasureService;
 import pb.wi.cohp.domain.measureParameter.dto.MeasureParameterDTO;
+import pb.wi.cohp.domain.measureParameter.dto.MeasuresToChartDTO;
 import pb.wi.cohp.domain.parameter.Parameter;
 import pb.wi.cohp.domain.parameter.ParameterService;
 import pb.wi.cohp.domain.range.Range;
@@ -15,6 +16,8 @@ import pb.wi.cohp.domain.user.User;
 import pb.wi.cohp.domain.user.UserService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 @Service
@@ -97,6 +100,24 @@ public class MeasureParameterService {
                 }
             }
         }
+        return result;
+    }
+
+    public List<MeasureParameter> getDataMeasuresByParameterIdAndOwner(Long id, String username){
+        return measureParameterRepository.findAllByParameter_IdAndMeasure_User_UsernameAndHiddenIsFalseOrderByMeasureDateAsc(id, username);
+    }
+
+    public List<List<?>> getArraysWithDataToChart(List<MeasuresToChartDTO> measuresToChartDTOS) {
+        List<Double> values = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+        for(MeasuresToChartDTO measuresToChartDTO: measuresToChartDTOS){
+            values.add(measuresToChartDTO.getValue());
+            String test = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(measuresToChartDTO.getMeasureDate());
+            dates.add(test);
+        }
+        List<List<?>> result = new ArrayList<>();
+        result.add(values);
+        result.add(dates);
         return result;
     }
 }

@@ -2,14 +2,14 @@ package pb.wi.cohp.domain.measureParameter.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeasureValuesDTO {
-    public Long id;
+public class MeasuresToChartDTO {
     public Double value;
-    public Long parameterId;
-    public String parameterName;
+    public LocalDate measureDate;
 }
